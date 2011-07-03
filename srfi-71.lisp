@@ -1,10 +1,5 @@
 ;;;; srfi-71.lisp
-
 (cl:in-package :srfi-71-internal)
-
-(def-suite srfi-71)
-
-(in-suite srfi-71)
 
 ; Reference implementation of SRFI-71 (generic part)
 ; Sebastian.Egner@philips.com, 20-May-2005, PLT 208
@@ -113,18 +108,24 @@
     ((i\:let "form1" rec (cwv ***) vxs body bss (x ts) (values))
      (i\:let "bs" rec (cwv *** (x ts)) vxs body bss))
     ((i\:let "form1" rec cwvs (vx ***) body bss (x (t ***)) (values v1 v ***))
-     (i\:let "form1" rec cwvs (vx *** (v1 t1)) body bss (x (t *** t1)) (values v ***)))
+     (with ((t1 (gensym)))
+       (i\:let "form1" rec cwvs (vx *** (v1 t1)) body bss (x (t *** t1)) (values v ***))))
 
 ; (i\:let "form1+" rec cwvs vxs body bss (x (t ***)) (values v *** . vr))
 ;   processes the variables in v *** . vr adding them to (t ***)
 ;   and producing a cwv when finished. The rest arg is vr.
 
     ((i\:let "form1+" rec cwvs (vx ***) body bss (x (t ***)) (values v1 v2 . vs))
-     (i\:let "form1+" rec cwvs (vx *** (v1 t1)) body bss (x (t *** t1)) (values v2 . vs)))
+     (with ((t1 (gensym)))
+       (i\:let "form1+" rec cwvs (vx *** (v1 t1)) body bss (x (t *** t1)) (values v2 . vs))))
     ((i\:let "form1+" rec (cwv ***) (vx ***) body bss (x (t ***)) (values v1 . vr))
-     (i\:let "bs" rec (cwv *** (x (t *** t1 . tr))) (vx *** (v1 t1) (vr tr)) body bss))
+     (with ((t1 (gensym))
+            (tr (gensym)))
+       (i\:let "bs" rec (cwv *** (x (t *** t1 . tr))) (vx *** (v1 t1) (vr tr)) body bss)))
     ((i\:let "form1+" rec (cwv ***) (vx ***) body bss (x ()) (values . vr))
-     (i\:let "bs" rec (cwv *** (x tr)) (vx *** (vr tr)) body bss))
+     (with ((t1 (gensym))
+            (tr (gensym)))
+       (i\:let "bs" rec (cwv *** (x tr)) (vx *** (vr tr)) body bss)))
 
 ; (i\:let "form2" rec cwvs vxs body bss (v ***) (b *** x))
 ;   processes the binding items (b *** x) from form2 as in
@@ -143,9 +144,10 @@
     ((i\:let "wrap" :false vxs body)
      (srfi-5:let vxs . body))
     ((i\:let "wrap" :false vxs body (x formals) cwv ***)
-     (call-with-values
-       (lambda () x)
-       (lambda formals (i\:let "wrap" :false vxs body cwv ***))))
+     (with ((vars (gensym)))
+       (multiple-value-call
+           (scheme-lambda formals (i\:let "wrap" :false vxs body cwv ***))
+         x)))
 
     ((i\:let "wrap" :true vxs body)
      (r5rs-letrec vxs . body))
@@ -161,10 +163,9 @@
     ((i\:let "wraprec" ((v t) ***) (body ***))
      (progn (set! v t) *** (srfi-5:let () body ***)))
     ((i\:let "wraprec" vxs body (x formals) cwv ***)
-     (call-with-values
-       (lambda () x)
-       (lambda formals (i\:let "wraprec" vxs body cwv ***))))
-
+     (multiple-value-call
+         (scheme-lambda formals (i\:let "wraprec" vxs body cwv ***))
+       x))
     ))
 
 (define-syntax i\:named-let

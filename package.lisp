@@ -22,5 +22,6 @@
 (defpackage :srfi-71-internal
   (:use :srfi-71 :cl :fiveam
         :mbe)
-  (:shadowing-import-from :srfi-71 :let :let*))
+  (:shadowing-import-from :srfi-71 :let :let*)
+  (:shadow :t))
 

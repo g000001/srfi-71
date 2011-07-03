@@ -6,7 +6,9 @@
   :serial t
   :depends-on (:mbe :srfi-5)
   :components ((:file "package")
-               (:file "srfi-71")))
+               (:file "utils")
+               (:file "srfi-71")
+               (:file "test")))
 
 (defmethod perform ((o test-op) (c (eql (find-system :srfi-71))))
   (load-system :srfi-71)

@@ -18,7 +18,7 @@
   (typecase list
     (list (if (tailp () list)
               list
-              (let ((last (last list)))
+              (cl:let ((last (last list)))
                 `(,@(butlast list)
                       ,(car last)
                     cl:&rest

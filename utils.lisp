@@ -12,7 +12,7 @@
     ((%letrec1 done ((x init) . bindings) . body)
      (%letrec1 ((x '#:undefined) . done) bindings (setq x init) . body))
     ((%letrec1 done () . body)
-     (srfi-86-internal::let done . body))))
+     (srfi-5:let done . body))))
 
 (defun to-proper-lambda-list (list)
   (typecase list

@@ -1,8 +1,8 @@
-(cl:in-package :srfi-71-internal)
+(cl:in-package "https://github.com/g000001/srfi-71#internals")
 
-(def-suite srfi-71)
 
-(in-suite srfi-71)
+(def-suite* srfi-71)
+
 
 (test let
   (is (= (+ 3 4)
@@ -26,3 +26,6 @@
   (is (equal (let (((values . args) (unlist '(1 2 3 4 5))))
                args)
              '(1 2 3 4 5))))
+
+
+;;; *EOF*

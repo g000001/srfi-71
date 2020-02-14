@@ -1,27 +1,34 @@
 ;;;; package.lisp
 
-(cl:in-package :cl-user)
+(cl:in-package cl-user)
 
-(defpackage :srfi-71
+
+(defpackage "https://github.com/g000001/srfi-71"
   (:use)
-  (:export
-   :letrec*
-   :letrec
-   :let*
-   :let
-   :uncons
-   :uncons-2
-   :uncons-3
-   :uncons-4
-   :uncons-cons
-   :unlist
-   :unvector
-   :values->list
-   :values->vector))
+  (:export letrec*
+           letrec
+           let*
+           let
+           uncons
+           uncons-2
+           uncons-3
+           uncons-4
+           uncons-cons
+           unlist
+           unvector
+           values->list
+           values->vector))
 
-(defpackage :srfi-71-internal
-  (:use :srfi-71 :cl :fiveam
-        :mbe)
-  (:shadowing-import-from :srfi-71 :let :let*)
-  (:shadow :t))
 
+(defpackage "https://github.com/g000001/srfi-71#internals"
+  (:use "https://github.com/g000001/srfi-71"
+        cl
+        fiveam
+        mbe)
+  (:shadowing-import-from "https://github.com/g000001/srfi-71"
+                          let
+                          let*)
+  (:shadow t))
+
+
+;;; *EOF*

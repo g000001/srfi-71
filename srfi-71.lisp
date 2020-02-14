@@ -1,5 +1,5 @@
 ;;;; srfi-71.lisp
-(cl:in-package :srfi-71-internal)
+(cl:in-package "https://github.com/g000001/srfi-71#internals")
 
 ; Reference implementation of SRFI-71 (generic part)
 ; Sebastian.Egner@philips.com, 20-May-2005, PLT 208
